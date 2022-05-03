@@ -1,11 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Leeson extends Model
 {
+    use HasFactory;
     protected $table = 'lessons';
 
     protected $fillable = [
