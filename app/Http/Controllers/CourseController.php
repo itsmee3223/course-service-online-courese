@@ -24,7 +24,7 @@ class CourseController extends Controller
         });
 
         $courses->when($status, function ($query) use ($status) {
-            return $query->whereRaw('status', '=', $status);
+            return $query->where('status', '=', $status);
         });
 
         return response()->json([
