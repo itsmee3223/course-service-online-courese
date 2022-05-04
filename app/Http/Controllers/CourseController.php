@@ -183,7 +183,7 @@ class CourseController extends Controller
         $course = Course::find($id);
         if (!$course) {
             return response()->json([
-                'status', 'error',
+                'status' => 'error',
                 'message' => 'course not found'
             ], 404);
         }
@@ -191,7 +191,7 @@ class CourseController extends Controller
         $course->delete();
 
         return response()->json([
-            'status', 'success',
+            'status' => 'success',
             'message' => 'course deleted successfully'
         ]);
     }

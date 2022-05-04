@@ -36,7 +36,7 @@ class MentorController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'name' => 'string',
+            'name' => 'required|string',
             'profile' => 'required|url',
             'profession' => 'required|string',
             'email' => 'required|email',
