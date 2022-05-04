@@ -21,7 +21,7 @@ class ChapterController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $chapters
+            'data' => $chapters->get()
         ]);
     }
 
