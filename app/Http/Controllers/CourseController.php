@@ -127,7 +127,28 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+        $rules = [
+            'name' => 'string',
+            'certificate' => 'boolean',
+            'thumbnail' => 'string|url',
+            'type' => 'in:free,premium',
+            'status' => 'in:draft,published',
+            'price' => 'integer',
+            'level' => 'in:all-level,beginner,intermediate,advance',
+            'mentor_id' => 'integer',
+            'description' => 'string'
+        ];
+
         $data = $request->all();
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()
+            ], 400);
+        }
 
         $course = Course::find($id);
         if (!$course) {
