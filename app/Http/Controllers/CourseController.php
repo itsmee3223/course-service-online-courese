@@ -20,7 +20,7 @@ class CourseController extends Controller
         $status = $request->query('status');
 
         $courses->when($q, function ($query) use ($q) {
-            return $query->whereRaw("name like '%" . strtolower($q) . "%'");
+            return $query->whereRaw("name LIKE '%" . strtolower($q) . "%'");
         });
 
         $courses->when($status, function ($query) use ($status) {
@@ -35,42 +35,40 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        // $course = Course::with('chapters.lessons')
-        // ->with('mentor')
-        // ->with('images')
-        // ->find($id);
+        $course = Course::with('chapters.lessons')
+            ->with('mentor')
+            ->with('images')
+            ->find($id);
 
-        // if(!$course){
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'course not found',
-        //     ], 404);
-        // }
+        if (!$course) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'course not found',
+            ], 404);
+        }
 
-        // $reviews = Review::where('course_id', '=', $id)->get()->toArray();
-        // if(count($reviews) > 0)
-        // {
-        //     $userIds = array_column($reviews, 'user_id');
-        //     $users = getUserbyIds($userIds);
-        //     if($users['status'] == 'error') {
-        //         $reviews = [];
-        //     } else {
-        //         foreach($reviews as $key => $review) {
-        //             $userIndex = array_search($review['user_id'], array_column($users['data'], 'id'));
-        //             $reviews[$key]['users'] = $users['data'][$userIndex];
-        //         }
-        //     }
-        // }
+        $reviews = Review::where('course_id', '=', $id)->get()->toArray();
+        if (count($reviews) > 0) {
+            $userIds = array_column($reviews, 'user_id');
+            $users = getUserByIds($userIds);
+            if ($users['status'] === 'error') {
+                $reviews = [];
+            } else {
+                foreach ($reviews as $key => $review) {
+                    $userIndex = array_search($review['user_id'], array_column($users['data'], 'id'));
+                    $reviews[$key]['users'] = $users['data'][$userIndex];
+                }
+            }
+        }
 
-        // $totalStudent = MyCourse::where('course_id', '=', $id)->count();
-        // $totalVideos = Chapter::where('course_id', '=', $id)->withCount('lessons')->get()->toArray();
-        // $finalTotalVideos = array_sum(array_column($totalVideos, 'lessons_count'));
+        $totalStudent = MyCourse::where('course_id', '=', $id)->count();
+        $totalVideos = Chapter::where('course_id', '=', $id)->withCount('lessons')->get()->toArray();
+        $finalTotalVideos = array_sum(array_column($totalVideos, 'lessons_count'));
 
-        // $course['reviews'] = $reviews;
-        // $course['total_videos'] = $finalTotalVideos;
-        // $course['total_student'] = $totalStudent;
+        $course['reviews'] = $reviews;
+        $course['total_videos'] = $finalTotalVideos;
+        $course['total_student'] = $totalStudent;
 
-        $course = Course::find($id);
         if (!$course) {
             return response()->json([
                 'status' => 'error',

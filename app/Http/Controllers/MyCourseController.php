@@ -52,14 +52,14 @@ class MyCourseController extends Controller
         }
 
         $userId = $request->input('user_id');
-        // $user = getUser($userId);
+        $user = getUser($userId);
 
-        // if($user['status'] ===' error'){
-        //     return response()->json([
-        //         'status' => $user['status'],
-        //         'message' => $user['message'],
-        //     ], $user['http_code']);
-        // }
+        if ($user['status'] === 'error') {
+            return response()->json([
+                'status' => $user['status'],
+                'message' => $user['message'],
+            ], $user['http_code']);
+        }
 
         $isExistMyCourse = MyCourse::where('course_id', '=', $courseId)
             ->where('user_id', '=', $userId)

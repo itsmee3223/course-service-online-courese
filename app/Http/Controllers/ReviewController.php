@@ -39,6 +39,15 @@ class ReviewController extends Controller
         }
 
         $userId = $request->input('user_id');
+        $user = getUser($userId);
+
+        if ($user['status'] === 'error') {
+            return response()->json([
+                'status' => $user['status'],
+                'message' => $user['message']
+            ], $user['http_code']);
+        }
+
         $isExistReview = Review::where('course_id', '=', $courseId)
             ->where('user_id', '=', $userId)
             ->exists();
