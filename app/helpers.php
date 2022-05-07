@@ -1,8 +1,10 @@
 <?php
+
 use Illuminate\Support\Facades\Http;
 
-function getUser($userId) {
-    $url = env('SERVICE_USER_URL').'users/'.$userId;
+function getUser($userId)
+{
+    $url = env('SERVICE_USER_URL') . 'users/' . $userId;
 
     try {
         $response = Http::timeout(10)->get($url);
@@ -10,16 +12,17 @@ function getUser($userId) {
         $data['http_code'] = $response->getStatusCode();
         return $data;
     } catch (\Throwable $th) {
-       return [
-           'status' => 'error',
-           'http_code' => 500,
-           'message' => 'service user unavailable'
-       ];
+        return [
+            'status' => 'error',
+            'http_code' => 500,
+            'message' => 'service user unavailable'
+        ];
     }
 }
 
-function getUserByIds($userIds = []) {
-    $url = env('SERVICE_USER_URL').'users/';
+function getUserByIds($userIds = [])
+{
+    $url = env('SERVICE_USER_URL') . 'users/';
 
     try {
         if (count($userIds) === 0) {
@@ -34,18 +37,18 @@ function getUserByIds($userIds = []) {
         $data = $response->json();
         $data['http_code'] = $response->getStatusCode();
         return $data;
-
     } catch (\Throwable $th) {
         return [
-           'status' => 'error',
-           'http_code' => 500,
-           'message' => 'service user unavailable'
-       ];
+            'status' => 'error',
+            'http_code' => 500,
+            'message' => 'service user unavailable'
+        ];
     }
 }
 
-function postOrder($params) {
-    $url = env('SERVICE_ORDER_PAYMENT_URL').'api/orders';
+function postOrder($params)
+{
+    $url = env('SERVICE_ORDER_PAYMENT_URL') . 'api/orders';
     try {
         $response = Http::post($url, $params);
         $data = $response->json();
