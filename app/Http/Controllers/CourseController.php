@@ -161,7 +161,7 @@ class CourseController extends Controller
             $mentor = Mentor::find($mentorId);
             if (!$mentor) {
                 return response()->json([
-                    'status', 'error',
+                    'status' => 'error',
                     'message' => 'mentor not found'
                 ], 404);
             }
@@ -171,7 +171,7 @@ class CourseController extends Controller
         $course->save();
 
         return response()->json([
-            'status', 'success',
+            'status' => 'success',
             'data' => $course
         ]);
     }
