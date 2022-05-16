@@ -14,6 +14,7 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
+
         $courses = Course::query();
 
         $q = $request->query('q');
@@ -43,8 +44,8 @@ class CourseController extends Controller
         if (!$course) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'course not found',
-            ], 404);
+                'message' => 'course not found'
+            ]);
         }
 
         $reviews = Review::where('course_id', '=', $id)->get()->toArray();
@@ -69,13 +70,6 @@ class CourseController extends Controller
         $course['total_videos'] = $finalTotalVideos;
         $course['total_student'] = $totalStudent;
 
-        if (!$course) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'course not found',
-            ]);
-        }
-
         return response()->json([
             'status' => 'success',
             'data' => $course
@@ -87,18 +81,19 @@ class CourseController extends Controller
         $rules = [
             'name' => 'required|string',
             'certificate' => 'required|boolean',
-            'thumbnail' => 'required|url',
+            'thumbnail' => 'string|url',
             'type' => 'required|in:free,premium',
             'status' => 'required|in:draft,published',
             'price' => 'integer',
             'level' => 'required|in:all-level,beginner,intermediate,advance',
             'mentor_id' => 'required|integer',
-            'description' => 'string',
+            'description' => 'string'
         ];
 
         $data = $request->all();
 
         $validator = Validator::make($data, $rules);
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -108,7 +103,6 @@ class CourseController extends Controller
 
         $mentorId = $request->input('mentor_id');
         $mentor = Mentor::find($mentorId);
-
         if (!$mentor) {
             return response()->json([
                 'status' => 'error',
@@ -179,18 +173,19 @@ class CourseController extends Controller
     public function destroy($id)
     {
         $course = Course::find($id);
+
         if (!$course) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'course not found'
-            ], 404);
+            ]);
         }
 
         $course->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'course deleted successfully'
+            'message' => 'course deleted'
         ]);
     }
 }
