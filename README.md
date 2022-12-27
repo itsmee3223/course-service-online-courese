@@ -42,9 +42,8 @@ Microservice is one of the architectures on Website Development that is used by 
 
 ## 🌍 APIs
 <p align="justify">
-This API is a service to handle and provide or store media data like course image, user image, etc.
-Using ExpressJS Framework, Sequelize ORM, MySQL Database, and another package you can check in the package.json.
-You can use third party like S3, Google Cloud Storage, Digital Ocean Object Storage to store the media.
+This API is a service to provide / store course data.
+Using Laravel Framework, Eloquent ORM, PostgreSQL Database, and another package you can check in the package.json and composer.json
 </p>
 
 API Documentation: https://documenter.getpostman.com/view/18696549/2s83f1Kbbi
